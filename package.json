@@ -2,6 +2,7 @@
   "name": "personal-cloud-so-i-can-remote-access-from-school",
   "version": "1.0.0",
   "main": "index.js",
+  "homepage": "https://Bmorgan08.github.io/Personal-cloud",
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
@@ -17,6 +18,7 @@
   "dependencies": {
     "cors": "^2.8.5",
     "express": "^4.21.2",
+    "gh-pages": "^6.3.0",
     "http": "^0.0.1-security",
     "personal-cloud-so-i-can-remote-access-from-school": "file:",
     "react": "^19.0.0",
