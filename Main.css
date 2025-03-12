@@ -23,7 +23,7 @@ button {
     border: none;
     background: hsl(0, 0%, 35%);
     border-radius: 5px;
-    width: 50px;
+    width: auto;
     height: 20px;
     transition-duration: 0.6s;
 }
@@ -67,3 +67,17 @@ textarea {
     border: none;
     color: white;
 };
+
+#powershell {
+    display: none;
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    height: 100%;
+}
+
+#StdOut {
+    width: 100%;
+    resize: none;
+    height: max-content;
+}
