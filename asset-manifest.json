@@ -1,10 +1,10 @@
 {
   "files": {
-    "main.js": "/Personal-cloud/static/js/main.7ae21090.js",
+    "main.js": "/Personal-cloud/static/js/main.d2b8109d.js",
     "index.html": "/Personal-cloud/index.html",
-    "main.7ae21090.js.map": "/Personal-cloud/static/js/main.7ae21090.js.map"
+    "main.d2b8109d.js.map": "/Personal-cloud/static/js/main.d2b8109d.js.map"
   },
   "entrypoints": [
-    "static/js/main.7ae21090.js"
+    "static/js/main.d2b8109d.js"
   ]
 }
