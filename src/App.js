@@ -1,12 +1,12 @@
 import React, { useState, useEffect, useRef } from "react";
 import { io } from "socket.io-client";
 
-const socket = io("https://dnx817df-5050.uks1.devtunnels.ms/"); // Replace with your WebSocket server URL
+const socket = io("https://dnx817df-5050.uks1.devtunnels.ms/");
 
 export default function App() {
   const [Name, setName] = useState("");
   const [files, setFiles] = useState([]);
-  const [openFile, setOpenFile] = useState(""); // Renamed to setOpenFile for clarity
+  const [openFile, setOpenFile] = useState("");
   const [openFilePath, setFilePath] = useState("");
   const [currentPath, setCurrentPath] = useState("E:/Code");
   const [stdOut, setStdOut] = useState("")
@@ -16,6 +16,7 @@ export default function App() {
 
   const fileContainerRef = useRef(null);
   const powershellRef = useRef(null);
+  const stdOutRef = useRef(null)
 
   const handleCreateFile = () => {
     if (!currentPath || !Name) {
@@ -38,7 +39,6 @@ export default function App() {
       alert("Please provide a folder path.");
       return;
     }
-    console.log(currentPath);
     socket.emit("read-files", currentPath);
   };
 
@@ -64,8 +64,8 @@ export default function App() {
       alert("No file to close");
       return;
     }
-    setOpenFile(""); // Corrected to setOpenFile
-    setFilePath(""); // Clear the file path as well
+    setOpenFile("");
+    setFilePath("");
   };
 
   const handleDeleteFile = (file) => {
@@ -97,21 +97,18 @@ export default function App() {
     if (newPath.slice(0, 7) !== "E:/Code") {
       newPath = "E:/Code";
     }
-    setCurrentPath(newPath); // Schedule path update
+    setCurrentPath(newPath);
   };
 
   const handleNavigateBack = () => {
     let pathSegments = currentPath.split("/");
 
-    // Prevent navigating beyond the root directory
     if (pathSegments.length <= 1) return;
 
-    // Remove the last segment to go back
     let newPath = pathSegments.slice(0, -1).join("/");
 
-    // Handle cases where the path should not be empty
     if (newPath === "") {
-      newPath = pathSegments[0]; // Keep root (e.g., "E:" on Windows)
+      newPath = pathSegments[0];
     }
 
     handleNavigate(newPath);
@@ -135,19 +132,17 @@ export default function App() {
       let cdPath = command.slice(3).trim();
   
       if (cdPath === "..") {
-        // Move up one directory
         newPath = newPath.split("/").slice(0, -1).join("/") || "E:/code";
       } else if (cdPath.startsWith("/") || cdPath.includes(":")) {
-        // Absolute path (e.g., "C:\\Users")
         newPath = cdPath;
       } else {
-        // Relative path
         newPath = `${newPath}/${cdPath}`;
       }
   
       setPowershellPath(newPath);
       setStdOut((prev) => prev + `\n${newPath}> `);
-      return; // Do not execute if it's only changing directories
+      setCommand("")
+      return;
     }
   
     fullCommand = `cd "${newPath}"; ${fullCommand}`;
@@ -159,22 +154,24 @@ export default function App() {
       alert("WebSocket is not connected.");
     }
   
-    setCommand(""); // Clear input field
+    setCommand("");
+    return
   };
   
   
   
 
   useEffect(() => {
-    console.log("Updated Path:", currentPath); // This will now log the correct updated path
+
+    if (stdOutRef.current) {
+      stdOutRef.current.scrollTop = stdOutRef.current.scrollHeight;
+    }
 
     const handleFileCreated = (data) => {
-      console.log("File created:", data);
       handleReadFiles();
     };
 
     const handleFileDeleted = (data) => {
-      console.log("File deleted:", data);
       handleReadFiles();
     };
 
@@ -183,7 +180,7 @@ export default function App() {
     };
 
     const handleFile = (data) => {
-      setOpenFile(data); // Corrected to setOpenFile
+      setOpenFile(data);
     };
 
     const handleError = (err) => {
@@ -191,7 +188,10 @@ export default function App() {
     };
 
     const handlePsOut = (data) => {
-      setStdOut((prev) => prev + "\n" + data + "\n")
+      if(data.slice(0, 3) === ", \n") {
+        data = data.slice(3)
+      }
+      setStdOut((prev) => prev + "\n" + data[1] + "\n")
     }
 
     socket.on("file-created", handleFileCreated);
@@ -201,7 +201,6 @@ export default function App() {
     socket.on("error", handleError);
     socket.on("ps-output", handlePsOut)
 
-    // Read directory immediately on launch
     handleReadFiles();
 
     return () => {
@@ -211,7 +210,7 @@ export default function App() {
       socket.off("error", handleError);
       socket.off("ps-output", handlePsOut)
     };
-  }, [currentPath]); // Run once on mount
+  }, [currentPath, stdOut]);
 
   return (
     <div>
@@ -272,9 +271,9 @@ export default function App() {
     ) : (
     <div ref={powershellRef} id={"powershell"}>
       <button onClick={() => handleClosePowershell()}>Close</button>
-      <textarea value={stdOut} id="StdOut"></textarea>
+      <textarea ref={stdOutRef} value={stdOut} id="StdOut"></textarea>
       <input type="text" value={command} onChange={(e) => setCommand(e.target.value)} placeholder="Enter a command"></input>
-      <button onClick={() => handleRunPowershell(command)}>Submit</button>
+      <button onClick={async () => {await handleRunPowershell(command); setCommand("")}}>Submit</button>
     </div>
     )}
     </div>

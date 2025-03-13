@@ -145,11 +145,11 @@ io.on("connection", (socket) => {
   socket.on("run-powershell", (command) => {
     exec(`powershell.exe -command "${command}"`, (error, stdout, stderr) => {
       if (error) {
-        socket.emit("ps-output", ["err", `Error: ${error.message}`])
+        socket.emit("ps-output", `Error: ${error.message}`)
         return
       }
       if (stderr) {
-        socket.emit("ps-output", ["stderr", `stderr: ${stderr}`])
+        socket.emit("ps-output", `stderr: ${stderr}`)
         return
       }
       socket.emit("ps-output", ["", stdout])
