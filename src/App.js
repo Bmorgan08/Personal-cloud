@@ -158,7 +158,12 @@ export default function App() {
     return
   };
   
-  
+  const handleRestartBackend = () => {
+    socket.emit("run-powershell", "cd E:/code/cloud/backend; ./restartBackendServer.ps1")
+    setTimeout(() => {
+      window.location.reload()
+    }, 2000);
+  }
   
 
   useEffect(() => {
@@ -267,6 +272,7 @@ export default function App() {
         </>
       )}
       <button onClick={() => handleRenderPowershell()}>Open powershell</button>
+      <button onClickCapture={() => handleRestartBackend()}>Restart backend</button>
     </div>
     ) : (
     <div ref={powershellRef} id={"powershell"}>
