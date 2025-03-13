@@ -23,7 +23,7 @@ button {
     border: none;
     background: hsl(0, 0%, 35%);
     border-radius: 5px;
-    width: 50px;
+    width: auto;
     height: 20px;
     transition-duration: 0.6s;
 }
@@ -67,3 +67,40 @@ textarea {
     border: none;
     color: white;
 };
+
+#powershell {
+    position: fixed;  /* Ensures it covers the whole screen */
+    top: 0;
+    left: 0;
+    width: 100vw; /* Full width */
+    height: 100vh; /* Full height */
+    background: hsl(0, 0%, 20%); /* Optional: Different background */
+    display: flex;
+    flex-direction: column; /* Stack items vertically */
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+#StdOut {
+    width: 98%;
+    height: 80vh; /* Adjust height to take most of the screen */
+    resize: none;
+    background: hsl(0, 0%, 15%);
+    border: none;
+    color: white;
+    padding: 10px;
+    font-size: 16px;
+}
+
+#powershell input {
+    width: 80%;
+    padding: 10px;
+}
+
+#powershell button {
+    width: 120px;
+    height: 40px;
+    font-size: 16px;
+}

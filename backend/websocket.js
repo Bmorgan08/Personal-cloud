@@ -4,6 +4,7 @@ const { Server } = require("socket.io");
 const cors = require("cors");
 const fs = require("fs").promises; // Use promises for cleaner code
 const path = require("path");
+const { exec } = require("child_process")
 
 const app = express();
 app.use(cors()); // Fix CORS issues
@@ -139,6 +140,20 @@ io.on("connection", (socket) => {
       console.error("error deleting file:", err);
       socket.emit("error", err.message)
     }
+  })
+
+  socket.on("run-powershell", (command) => {
+    exec(`powershell.exe -command "${command}"`, (error, stdout, stderr) => {
+      if (error) {
+        socket.emit("ps-output", ["err", `Error: ${error.message}`])
+        return
+      }
+      if (stderr) {
+        socket.emit("ps-output", ["stderr", `stderr: ${stderr}`])
+        return
+      }
+      socket.emit("ps-output", ["", stdout])
+    })
   })
 
   socket.on("disconnect", () => {
