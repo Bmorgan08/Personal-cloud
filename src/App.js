@@ -262,7 +262,7 @@ export default function App() {
             <h2>Current file:</h2>
             <button onClick={() => handleSaveFile()}>Save</button>
             <button onClick={() => handleCloseFile()}>Close</button>
-            <textarea value={openFile} onChange={(e) => setOpenFile(e.target.value)} id="openFile"></textarea>
+            <textarea spellcheck="false" value={openFile} onChange={(e) => setOpenFile(e.target.value)} id="openFile"></textarea>
           </div>
         </>
       )}
@@ -271,7 +271,7 @@ export default function App() {
     ) : (
     <div ref={powershellRef} id={"powershell"}>
       <button onClick={() => handleClosePowershell()}>Close</button>
-      <textarea ref={stdOutRef} value={stdOut} id="StdOut"></textarea>
+      <textarea spellcheck="false" ref={stdOutRef} value={stdOut} id="StdOut"></textarea>
       <input type="text" value={command} onChange={(e) => setCommand(e.target.value)} placeholder="Enter a command"></input>
       <button onClick={async () => {await handleRunPowershell(command); setCommand("")}}>Submit</button>
     </div>
