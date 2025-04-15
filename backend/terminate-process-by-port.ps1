@@ -1,11 +1,8 @@
-# Find all processes using port 5050
 $processes = Get-NetTCPConnection -LocalPort 5050 | Select-Object -ExpandProperty OwningProcess | Select-Object -Unique
 
-foreach ($processId in $processes) {  # Renamed from $pid to $processId
-    # Get process details
+foreach ($processId in $processes) {
     $process = Get-WmiObject Win32_Process | Where-Object { $_.ProcessId -eq $processId }
 
-    # Check if it's the WebSocket server (node.exe running websocket.js)
     if ($process.Name -eq "node.exe" -and $process.CommandLine -match "websocket.js") {
         Write-Host "Terminating WebSocket server (PID: $processId)..."
         try {

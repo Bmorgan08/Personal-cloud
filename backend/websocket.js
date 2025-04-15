@@ -2,12 +2,12 @@ const express = require("express");
 const http = require("http");
 const { Server } = require("socket.io");
 const cors = require("cors");
-const fs = require("fs").promises; // Use promises for cleaner code
+const fs = require("fs").promises;
 const path = require("path");
 const { exec } = require("child_process")
 
 const app = express();
-app.use(cors()); // Fix CORS issues
+app.use(cors());
 
 const server = http.createServer(app);
 const io = new Server(server, {
@@ -36,7 +36,7 @@ io.on("connection", (socket) => {
         });
       }
   
-      socket.emit("files", detailedEntries); // Send structured data to client
+      socket.emit("files", detailedEntries);
     } catch (err) {
       console.error("Error reading files:", err);
       socket.emit("error", err.message);
