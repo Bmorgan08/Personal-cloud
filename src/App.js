@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import { io } from "socket.io-client";
 
-const socket = io("https://dnx817df-5050.uks1.devtunnels.ms/");
+const socket = io("https://x647wbx8-5050.uks1.devtunnels.ms/");
 
 export default function App() {
   const [Name, setName] = useState("");

@@ -69,14 +69,14 @@ textarea {
 };
 
 #powershell {
-    position: fixed;  /* Ensures it covers the whole screen */
+    position: fixed;
     top: 0;
     left: 0;
-    width: 100vw; /* Full width */
-    height: 100vh; /* Full height */
-    background: hsl(0, 0%, 20%); /* Optional: Different background */
+    width: 100vw;
+    height: 100vh;
+    background: hsl(0, 0%, 20%);
     display: flex;
-    flex-direction: column; /* Stack items vertically */
+    flex-direction: column;
     align-items: center;
     justify-content: center;
     padding: 20px;
@@ -85,7 +85,7 @@ textarea {
 
 #StdOut {
     width: 98%;
-    height: 80vh; /* Adjust height to take most of the screen */
+    height: 80vh;
     resize: none;
     background: hsl(0, 0%, 15%);
     border: none;
